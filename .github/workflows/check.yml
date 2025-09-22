@@ -2,7 +2,7 @@ name: Panasonic Stock Check
 
 on:
   schedule:
-    - cron: "0 * * * *"   # 毎時0分（自動実行）
+    - cron: "*/30 * * * *"   # 毎時0分（自動実行）
   workflow_dispatch:       # 手動実行ボタン
 
 jobs:
