@@ -12,6 +12,9 @@ require('dotenv').config();
 
 // ======================= 監視対象URL =======================
 const URLS = {
+  "掃除機": [
+    "https://panasonic.jp/pfr-soji/c-db/products/MC-NX700K-W-A/shopping.mc-nx700k-w-a.html",
+  ],
   "洗濯機": [
     "https://panasonic.jp/pfr-wash/c-db/products/NA-LX127DRWD-A/shopping.na-lx127drwd-a.html",
     "https://panasonic.jp/pfr-wash/c-db/products/NA-LX125DRWD-A/shopping.na-lx125drwd-a.html",
