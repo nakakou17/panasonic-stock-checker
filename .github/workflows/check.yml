@@ -1,0 +1,48 @@
+name: Panasonic Stock Check
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # 毎時0分（自動実行）
+  workflow_dispatch:       # 手動実行ボタン
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    concurrency:
+      group: stock-check
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install deps
+        run: |
+          npm i playwright@^1 nodemailer@^6 dotenv@^16
+          npx playwright install chromium
+
+      - name: Run checker
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
+          MAIL_TO:   ${{ secrets.MAIL_TO }}
+          HEADLESS:  "true"
+          CHANNEL:   "chrome"
+        run: node check-stock.js
+
+      - name: Upload artifacts (optional)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts
+          path: artifacts/
+          if-no-files-found: ignore
